@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+    <head>
+        <title>{{title}}</title>
+    </head>
+<body>
+    
+    <form method='POST' action = "/">
+        <label>Title
+            <input name="Title" type="string" value='{{new_title}}' />
+        </label>
+        <label>Body
+            <input name="Body" type="string" value='{{new_body}}' />
+        </label>
+    <nav>
+        <a href="blogs.html/"></a> 
+        
+      </nav>
+    {% block content %}
+    {% endblock %}
+      </form>
+</body>
+</html>
