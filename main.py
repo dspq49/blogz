@@ -10,12 +10,13 @@ app.config['SQLALCHEMY_ECHO'] = True
 
 db = SQLAlchemy(app)
 
+app.secret_key = 'asdf8uej!'
 
 class Blog(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120))
-    body = db.Column(db.Text)
+    body = db.Column(db.String(120))
     
     
 
@@ -30,7 +31,7 @@ class Blog(db.Model):
 
 
 
-@app.route('/', methods=['POST', 'GET'])
+@app.route('/newpost', methods=['POST', 'GET'])
 def index():
 
     if request.method == 'POST':
@@ -51,7 +52,7 @@ def index():
         return render_template('blogs.html')
 
 
-@app.route('/', methods=['POST'])   
+@app.route('/', methods=['GET'])   
 def new_posting(title, body):
 
     new_post = ""
@@ -73,7 +74,7 @@ def new_posting(title, body):
     
 
 
-#app.secret_key = 'asdf8uej!'
+
 
 if __name__ == "__main__":
     app.run()

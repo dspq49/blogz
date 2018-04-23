@@ -1,23 +1,34 @@
 <!doctype html>
 <html>
-    <head>
+     <head>
         <title>{{title}}</title>
-    </head>
-<body>
+
+        <a href='/newpost'>Add a Blog Entry</a>
+        <a href='/'>  Main Blog Page</a>
     
-    <form method='POST' action = "/">
+    <style>   
+
+   
+
+    
+    <form method = 'POST' action = "/">
         <label>Title
             <input name="Title" type="string" value='{{new_title}}' />
         </label>
         <label>Body
             <input name="Body" type="string" value='{{new_body}}' />
         </label>
-    <nav>
-        <a href="blogs.html/"></a> 
-        
-      </nav>
+    
+   
+    </style>
+    </head>
+
+   
+
+    
+<body>
     {% block content %}
     {% endblock %}
-      </form>
+
 </body>
 </html>
