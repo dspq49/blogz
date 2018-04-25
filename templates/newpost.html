@@ -2,25 +2,24 @@
 
 {% block content %}
     <h1>Time to Blog!</h1>
-    <form action="/blogs", method="POST">
-        <label for>Body{{ blog_body }}</label>
-        <input id="search-term" type="string" name="q" />
-        <input type="submit" />
-  
-
-            Title:
-            <input type="string" name='blog_title' value="{{ title }}" />
-            <span class="error">{{ title_error }}</span>
-        </label>
-
-        <hr />
+    
+    <form action="/newpost", method="POST">
         
-        <label>
-            Blog Body Here:
-        </label>
-            <textarea type="string" name='body' value="{{ body }}">{{ body }}</textarea>
-            <span class="error">{{ body_error }}</span>
-            <input type="submit" value='Add Entry' />
+        <label for="title">Enter Title:</label>
+        <br>
+        <input id="title" type="text" name="title" value={{title}}>
+        <span="error">{{notitle_error}}</span>
+        <br>
+        <br>
+        <label for="body">Enter Body:</label>
+        <span="error">{{nobody_error}}</span>
+        <br>
+        <textarea rows="4" cols="50" name="body" id="body">{{body}}</textarea>
+        <br>
+        <input type="submit" value="Add new blog"/>
+        
+
+      
     </form>
 {% endblock %} 
 
