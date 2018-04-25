@@ -2,10 +2,14 @@
 
 {% block content %}
     <h1>Time to Blog!</h1>
-    <form method='post'>
-        <label>
+    <form action="/blogs", method="POST">
+        <label for>Body{{ blog_body }}</label>
+        <input id="search-term" type="string" name="q" />
+        <input type="submit" />
+  
+
             Title:
-            <input type="text" name='title' value="{{ title }}" />
+            <input type="string" name='blog_title' value="{{ title }}" />
             <span class="error">{{ title_error }}</span>
         </label>
 
@@ -14,9 +18,8 @@
         <label>
             Blog Body Here:
         </label>
-            <textarea type="text" name='body' value="{{ body }}">{{ body }}</textarea>
+            <textarea type="string" name='body' value="{{ body }}">{{ body }}</textarea>
             <span class="error">{{ body_error }}</span>
-            <input id="blogs" type="text" name="body_field" value="New Post">
             <input type="submit" value='Add Entry' />
     </form>
 {% endblock %} 

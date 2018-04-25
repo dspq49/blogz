@@ -31,49 +31,63 @@ class Blog(db.Model):
 
 
 
+
 @app.route('/newpost', methods=['POST', 'GET'])
 def index():
 
     if request.method == 'POST':
         
         blog_title = request.form['title']
-        new_title = Blog(blog_title)
         blog_body = request.form['body']
-        new_body = Blog(blog_body)
-        new_blog = Blog(new_title, new_body)
-        db.session.add(new_blog)
-        db.session.commit()
-        return render_template('newpost.html',title="Build A Blog!", body=body) 
+        
+        nobody_error = ""
+        notitle_error = ""
+
+        if blog_title == "":
+            notitle_error = "Please enter a title"
+
+        if body == "":
+            nobody_error = "Please enter words in body"
+            return render_template('newpost.html', blog_title =blog_title, blog_body=blog_body,
+                notitle_error=notitle_error, nobody_error = nobody_error)
        
-    blogs = Blog.query.all()
-    id = request.args.get('id')
+       
+        else:
+            new_blog = Blog(blog_title, blog_body)      
+            db.session.add(new_blog)
+            db.session.commit()
+        
+        
+            return redirect('/blogs?blog_id=' + str(new_blog.blog_id))
+    
+    else: 
+        return render_template('newpost.html', title="", body="", notitle_error="", nobody_error="")
+    
     
     if request.method == 'GET':
         return render_template('blogs.html')
 
 
-@app.route('/', methods=['GET'])   
-def new_posting(title, body):
-
-    new_post = ""
-
-    if len(title) > 0 and len(body) > 0:
-        #new_post = 
-        return render_template('newpost.html', new_post)
-        #i need to render template with the new information of title and body
-       
-
-
-        #blogs.append(blog)
-        
-        #posted_name = request.form['posted']
-        #new_post = Blog(posted_name)
-           
-    #blogs.query.filter_by(completed=False).all()
-    #completed_posts = Blog.query.filter_by(completed=True).all()
+@app.route('/blogs', methods=['GET'])   
+def mainpage():
     
+    id = request.args.get('id')
 
+    if id == '':
+        blogs = Blog.query.all()
+        return render_template('blogs.html', title="Build A Blog", blogs=blogs)
 
+    else:
+        id = str(id)
+        blogs = Blog.query.get(id)
+        return render_template('onepost.html', title="Single Entry", blogs=blogs)
+        
+        #, blog_title=blogs.blog_title, body=blogs.blog_body)
+      
+
+@app.route('/')
+def pointtoblogs():
+    return redirect('/blogs')
 
 
 if __name__ == "__main__":

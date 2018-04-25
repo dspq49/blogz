@@ -12,7 +12,7 @@
             {% for blog in blogs %}
             <li>{{blog.name}}
                 <form method="POST" action="/newpost" style="display:inline-block;">
-                    <input type="hidden" name="blog-id" value="{{blog.id}}" />
+                    <input type="hidden" name="id" value="{{id}}" />
                     <input type="submit" value="Done!" />
                 </form>
             </li>
