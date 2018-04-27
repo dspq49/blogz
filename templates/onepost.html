@@ -2,19 +2,8 @@
 {% block content %}
 
 
-<h1>{{title}}</h1>
-<p>{{blogs.body}}</p>
-<p>{{blogs.title}}</p>
-<form action="/blogs", method="GET">
-    <label for>Body{{ blog_body }}:</label>
-    <input id="search-term" type="string" name="q" />
-    <input type="submit" />
-</form>
-        <h2>Title:</h2>
-        <input type="text" name='blog_title' value="{{ title }}" />
-        <span class="error">{{ title_error }}</span>
+    <h2>{{single_blog.title}} </h2>
     
-
-    
-
+                <p>{{single_blog.body}}</p>
+        
 {% endblock %}

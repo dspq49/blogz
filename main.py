@@ -62,7 +62,9 @@ def validate_blog():
             db.session.add(new_blog)
             db.session.commit()
         
-            return redirect('/blogs') 
+
+
+            return redirect('/blogs?id='+str(new_blog.id))
 
     return render_template('newpost.html')
 
@@ -70,15 +72,25 @@ def validate_blog():
 # as with Get It Done!, 
 # and then separate those portions into separate routes, handler classes, and templates. 
 # For the moment, when a user submits a new post, redirect them to the main blog page.
-@app.route('/blogs', methods=['GET'])   
+@app.route('/blogs', methods=['POST', 'GET'])   
 def all_blogs():
     #when people go to blogs, they should see all blogs 
     #GET requests only
     #id = request.args.get('id')
+    #id = request.args.get('id')
+    id = request.args.get('id')
 
+    if (id):
+        
+
+        single_blog = Blog.query.get(id)
+        
+        return render_template('onepost.html', single_blog=single_blog)
     #if not id :
-    blogs = Blog.query.all()
-    return render_template('blogs.html', title="Build A Blog", blogs=blogs)
+    
+    else:
+        blogs = Blog.query.all()
+        return render_template('blogs.html', blogs=blogs)
 
     #else:
      #   id = str(id)
