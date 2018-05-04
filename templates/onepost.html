@@ -5,5 +5,8 @@
     <h2>{{single_blog.title}} </h2>
     
                 <p>{{single_blog.body}}</p>
-        
+     
+                <p> By: <a href="./blogs?user={{user.id}}">{{user.username}}</a></p>            
+
+
 {% endblock %}
