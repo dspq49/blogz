@@ -10,13 +10,13 @@
                 {% for blog in blogs %}
                 
                     <h1>
-                        <a href="./blogs?id={{blog.id}}">{{title}}</a>
+                        <a href="/blogs?blog_id={{blog.id}}">{{blog.title}}</a>
                     </h1>
                     <p>
                         {{body}}
                     </p>
                     <p>
-                        By: <a href="./mainpage?user={{blog.user.id}}">{{user.username}}</a> 
+                        By: <a href="/blogs?user_id={{blog.user.id}}">{{blog.user.username}}</a> 
                     </p>
                 {% endfor %}
                 

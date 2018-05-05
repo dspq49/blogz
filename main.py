@@ -14,19 +14,20 @@ app.secret_key = 'asdf8uej!'
 
 class Blog(db.Model):
 
+
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120))
     body = db.Column(db.String(120))
     owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 
-    def __init__(self, title, body, user):
+    def __init__(self, title, body, owner_id):
         self.title = title
         self.body = body
-        self.user = user
+        self.owner_id = owner_id
 
     def __repr__(self):
-        return '<Blog %r>' % self.title % self.body % self.user
+        return '<Blog %r>' % self.title % self.body 
 
 
 class User(db.Model):
@@ -39,7 +40,7 @@ class User(db.Model):
     def __init__(self, username, password):
         self.username = username
         self.password = password
-
+        
     def __repr__(self):
         return '<User %r>' % self.username % self.password
 
@@ -49,8 +50,8 @@ class User(db.Model):
 
 @app.before_request
 def login_required():
-    routes = ['login', 'base', 'index', 'signup']
-    if request.endpoint not in routes and 'username' not in session:
+    routes = ['login', 'base', 'index', 'signup', 'logout', 'all_blogs']
+    if request.endpoint not in routes and 'user' not in session:
         return redirect('/login')
 
 
@@ -71,11 +72,11 @@ def login():
         password = request.form['password']
         user = User.query.filter_by(username=username).first()
         error_message = ''
-        if user and user.password == password:
-            session ['username'] = username
+        if username and user.password == password:
+            session ['user'] = user.id
             return redirect('/newpost')
         else:
-            if user and user.password != password:
+            if username and user.password != password:
                 error_message = 'Bad Password'
             elif not user:
                 error_message = 'Username Does Not Exist'
@@ -122,7 +123,7 @@ def signup():
                 new_user = User(username, password)
                 db.session.add(new_user)
                 db.session.commit()
-                session['username'] = username
+                session['user'] = new_user.id
                 return redirect('/newpost')
             else:
                 username_error = 'Username Already Exists'
@@ -136,7 +137,9 @@ def signup():
 
 @app.route('/logout')
 def logout():
-    del session['username']
+    if session['user']:
+        del session['user']
+    
     return redirect('/blogs')
 
 
@@ -144,23 +147,19 @@ def logout():
 def all_blogs():
     #when people go to blogs, they should see all blogs 
     #GET requests only
-    #id = request.args.get('id')
-    #id = request.args.get('id')
-    id = request.args.get('id', -1, type=int)
-    user = request.args.get('user', type=int)
-
-
-
-    if (id):
-        
-
-        single_blog = Blog.query.get(id)
-        return render_template('onepost.html', single_blog=single_blog)
-    #if not id :
     
-    if user:
-        blogs = Blog.query.filter_by(id=user).all()
-        return render_template('singleUser.html', blogs=blogs)
+    blog_id = request.args.get('blog_id')
+    user_id = request.args.get('user_id')
+
+
+
+    if (blog_id):
+        post = Blog.query.get(blog_id)
+        return render_template('onepost.html', post=post)
+    
+    elif user_id:
+        user = User.query.get(user_id)
+        return render_template('singleUser.html', blogs=user.blogs)
 
     
     blogs = Blog.query.all()
@@ -200,36 +199,18 @@ def validate_blog():
         
 
         else:
-            user = User.query.filter_by(username=session['username']).first()
-            new_blog = Blog(title, body)      
+            user = User.query.get(session['user'])
+            new_blog = Blog(title, body, user.id)      
             db.session.add(new_blog)
             db.session.commit()
-            variable = '/blogs?id='+str(new_blog.id)
-
-
             return redirect('/blogs?id='+str(new_blog.id))
 
-    return render_template('newpost.html')
+    user = User.query.get(session['user'])
+    return render_template('newpost.html', user=user)
 
 
 
 
-#First, set up the blog so that the "add a new post" form and the blog listings are on the same page, 
-# as with Get It Done!, 
-# and then separate those portions into separate routes, handler classes, and templates. 
-# For the moment, when a user submits a new post, redirect them to the main blog page.
-
-    #else:
-     #   id = str(id)
-      #  blogs = Blog.query.get(id)
-       #return render_template('onepost.html', title="Single Entry", blogs=blogs)
-        
-
-
-
-
-#@app.route('/', methods=['POST', 'GET'])
-#def index():
 
 
 if __name__ == "__main__":

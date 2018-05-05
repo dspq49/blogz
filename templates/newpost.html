@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <p>welcome {{user.username}}</p>
     <h1>Time to Blog!</h1>
     
     <form action="/newpost", method="POST">

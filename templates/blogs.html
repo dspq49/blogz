@@ -9,13 +9,14 @@
     {% else %}
 
         <ul>
-            {% for single_blog in blogs %}
+            {% for blog in blogs %}
             
-             <h4><a href='/blogs?id={{single_blog.id}}'>{{single_blog.title}}</a></h4>  
+             <h4>
+                 <p><a href='/blogs?blog_id={{blog.user.id}}'>{{blog.title}}</a></p></h4>  
             <br>
-            <p>{{single_blog.body}}</p>
+            <p>{{blog.body}}</p>
                 
-            <p>By: <a href="./blogs?user={{user.id}}">{{user.username}}</a></p>       
+            <p> By: <a href="/blogs?user_id={{blog.user.id}}">{{blog.user.username}}</a></p>       
                
        
             {% endfor %}
